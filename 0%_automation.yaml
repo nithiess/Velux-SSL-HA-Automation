@@ -1,0 +1,22 @@
+alias: VELUX 0% wenn Sonn weg
+description: ""
+triggers:
+  - trigger: numeric_state
+    entity_id:
+      - sensor.string_2_w_mod
+    below: 40
+conditions:
+  - condition: state
+    entity_id: input_boolean.velux_automatik
+    state: "on"
+  - condition: state
+    entity_id: binary_sensor.sonneneinstrahlung_trend
+    state: "off"
+actions:
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: "0"
+    target:
+      entity_id: input_number.velux_verdunkelung_soll
+mode: single
