@@ -1,0 +1,22 @@
+alias: Velux 80% wenn Sonne stärker
+description: ""
+triggers:
+  - trigger: numeric_state
+    entity_id:
+      - sensor.string_2_w_mod
+    above: 200
+conditions:
+  - condition: state
+    entity_id: input_boolean.velux_automatik
+    state: "on"
+  - condition: numeric_state
+    entity_id: sensor.cu401b_g_aussentemperatur
+    above: 11
+actions:
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: "80"
+    target:
+      entity_id: input_number.velux_verdunkelung_soll
+mode: single
