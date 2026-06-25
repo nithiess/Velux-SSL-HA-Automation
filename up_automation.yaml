@@ -1,0 +1,40 @@
+alias: Velux rauf dynamisch
+description: ""
+triggers:
+  - trigger: state
+    entity_id:
+      - input_number.velux_verdunkelung_soll
+conditions:
+  - condition: template
+    value_template: >-
+      {{ states('input_number.velux_verdunkelung_ist')|int >
+      states('input_number.velux_verdunkelung_soll')|int }}
+actions:
+  - variables:
+      fahrdauer: >-
+        {{((states('input_number.velux_verdunkelung_ist')|int -
+        states('input_number.velux_verdunkelung_soll')|int) * 0.5) |
+        timestamp_custom('%-H:%-M:%-S', false) }}
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.kli_313_rauf_taster
+  - if:
+      - condition: numeric_state
+        entity_id: input_number.velux_verdunkelung_soll
+        above: 5
+    then:
+      - delay: "{{ fahrdauer }}"
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.kli_313_stop_taster
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: "{{ states('input_number.velux_verdunkelung_soll')|float }}"
+    target:
+      entity_id: input_number.velux_verdunkelung_ist
+mode: single
