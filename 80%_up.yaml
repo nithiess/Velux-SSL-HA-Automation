@@ -1,0 +1,25 @@
+alias: Velux 80% wenn Sonne weniger
+description: ""
+triggers:
+  - trigger: numeric_state
+    entity_id:
+      - sensor.string_2_w_mod
+    below: 200
+conditions:
+  - condition: state
+    entity_id: input_boolean.velux_automatik
+    state: "on"
+  - condition: state
+    entity_id: binary_sensor.sonneneinstrahlung_trend
+    state: "off"
+  - condition: numeric_state
+    entity_id: input_number.velux_verdunkelung_ist
+    above: 80
+actions:
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: "80"
+    target:
+      entity_id: input_number.velux_verdunkelung_soll
+mode: single
