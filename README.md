@@ -5,5 +5,8 @@ Low Budget Velux SSL Automatisierung mit PV Modulen als Lichtsensor
 Handsender Velux KLI 310
 NodeMCU V3 ESP8266
 
+## Verdrahtung
+https://community.simon42.com/t/velux-solar-rolladen/5618/10
+
 ## Vorstellung
 https://www.youtube.com/watch?v=vLKIJ71ZAa4&lc
