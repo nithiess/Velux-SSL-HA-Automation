@@ -1,0 +1,77 @@
+esphome:
+  name: solar-rolladen
+
+esp8266:
+  board: esp01_1m
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "..." 
+
+#ota:
+#  password:  !secret esp_ota_password
+
+wifi:
+  ssid: !secret esp_wifi_ssid
+  password: !secret esp_wifi_psk
+  manual_ip:
+    static_ip: 192.168.xxx
+    gateway: 192.168.xxx
+    subnet: 255.255.255.0
+  domain: .fritz.box
+
+
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Solar Rolladen Hotspot"
+  
+
+captive_portal:
+
+switch:
+  - platform: gpio
+    pin: GPIO0  #D3#
+    name: "Kli 313 Runter Taster"
+    id: kli_313_runter
+    inverted: true
+    restore_mode: ALWAYS_OFF
+    on_turn_on:
+      then:
+        - switch.turn_on: kli_313_runter
+        - delay: 400ms
+        - switch.turn_off: kli_313_runter
+
+  - platform: gpio
+    pin: GPIO4  #D2#
+    name: "Kli 313 Rauf Taster"
+    id: kli_313_rauf
+    inverted: true
+    restore_mode: ALWAYS_OFF
+    on_turn_on:
+      then:
+        - switch.turn_on: kli_313_rauf
+        - delay: 400ms
+        - switch.turn_off: kli_313_rauf
+
+  - platform: gpio
+    pin: GPIO5  #D1#
+    name: "Kli 313 Stop Taster"
+    id: kli_313_stop
+    inverted: true
+    restore_mode: ALWAYS_OFF
+    on_turn_on:
+      then:
+        - switch.turn_on: kli_313_stop
+        - delay: 400ms
+        - switch.turn_off: kli_313_stop
+
+    
+# Optional: Weboberfläche    
+web_server:
+  port: 80
+  version: 1
